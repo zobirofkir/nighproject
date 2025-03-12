@@ -77,6 +77,10 @@ const Message = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
 
+    const handleLogout = () => {
+        window.location.href = '/logout';
+    };
+
     const sidebarVariants = {
         open: { width: '20rem', opacity: 1, x: 0 },
         closed: { width: 0, opacity: 0, x: '-100%' },
@@ -109,21 +113,41 @@ const Message = () => {
                                 </svg>
                             </button>
                         </div>
-                        <div className="overflow-y-auto">
-                            {users.map((user) => (
-                                <div
-                                    key={user.id}
-                                    className="flex items-center border-b p-4 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-700"
-                                >
-                                    <div className="h-10 w-10 rounded-full bg-gray-300 dark:bg-gray-600"></div>
-                                    <div className="ml-4">
-                                        <p className="font-medium text-gray-800 dark:text-white">{user.name}</p>
-                                        <p className={`text-sm ${user.status === 'online' ? 'text-green-500' : 'text-gray-500 dark:text-gray-400'}`}>
-                                            {user.status === 'online' ? 'Online' : 'Offline'}
-                                        </p>
+                        <div className="flex h-[calc(100%-4rem)] flex-col justify-between overflow-y-auto">
+                            <div>
+                                {users.map((user) => (
+                                    <div
+                                        key={user.id}
+                                        className="flex items-center border-b p-4 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-700"
+                                    >
+                                        <div className="h-10 w-10 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+                                        <div className="ml-4">
+                                            <p className="font-medium text-gray-800 dark:text-white">{user.name}</p>
+                                            <p
+                                                className={`text-sm ${user.status === 'online' ? 'text-green-500' : 'text-gray-500 dark:text-gray-400'}`}
+                                            >
+                                                {user.status === 'online' ? 'Online' : 'Offline'}
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
+                            <div className="border-t p-4 dark:border-gray-700">
+                                <button
+                                    onClick={handleLogout}
+                                    className="flex w-full items-center justify-center space-x-2 rounded-lg bg-red-500 px-4 py-2 text-white transition-colors hover:bg-red-600"
+                                >
+                                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                                        />
+                                    </svg>
+                                    <span>Logout</span>
+                                </button>
+                            </div>
                         </div>
                     </motion.div>
                 )}
