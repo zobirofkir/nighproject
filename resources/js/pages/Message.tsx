@@ -10,7 +10,6 @@ const Message = () => {
     const { auth } = usePage<Props>().props;
     const { messages, newMessage, setNewMessage, users, selectedUser, handleSendMessage, handleUserSelect, messagesEndRef } = useChat(auth.user.id);
 
-    const [isDarkMode] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
