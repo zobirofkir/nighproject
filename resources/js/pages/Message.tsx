@@ -3,7 +3,7 @@ import { useChat } from '@/hooks/use-chat';
 import { Props } from '@/types/message';
 import { usePage } from '@inertiajs/react';
 import { format } from 'date-fns';
-import EmojiPicker from 'emoji-picker-react';
+import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 
@@ -16,7 +16,7 @@ const Message = () => {
 
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
-    const onEmojiClick = (emojiObject: any) => {
+    const onEmojiClick = (emojiObject: EmojiClickData) => {
         setNewMessage((prevMessage) => prevMessage + emojiObject.emoji);
         setShowEmojiPicker(false);
     };
@@ -67,35 +67,41 @@ const Message = () => {
 
                 {/* Chat Messages */}
                 <div className="flex-1 overflow-y-auto bg-gray-50 p-6 dark:bg-gray-900">
-                    <div className="space-y-4">
-                        {messages.map((message) => (
-                            <motion.div
-                                key={message.id}
-                                initial="initial"
-                                animate="animate"
-                                exit="exit"
-                                variants={messageVariants}
-                                transition={{ type: 'spring', duration: 0.5 }}
-                                className={`flex ${message.user.id === auth.user.id ? 'justify-end' : 'justify-start'}`}
-                            >
-                                <div
-                                    className={`max-w-[70%] rounded-2xl px-4 py-3 shadow-sm ${
-                                        message.user.id === auth.user.id
-                                            ? 'bg-blue-500 text-white'
-                                            : 'bg-white text-gray-800 dark:bg-gray-800 dark:text-white'
-                                    }`}
+                    {selectedUser ? (
+                        <div className="space-y-4">
+                            {messages.map((message) => (
+                                <motion.div
+                                    key={message.id}
+                                    initial="initial"
+                                    animate="animate"
+                                    exit="exit"
+                                    variants={messageVariants}
+                                    transition={{ type: 'spring', duration: 0.5 }}
+                                    className={`flex ${message.user.id === auth.user.id ? 'justify-end' : 'justify-start'}`}
                                 >
-                                    <p className="leading-relaxed break-words">{message.content}</p>
-                                    <span className="mt-1 block text-xs opacity-70">{format(new Date(message.created_at), 'HH:mm')}</span>
-                                </div>
-                            </motion.div>
-                        ))}
-                        <div ref={messagesEndRef} />
-                    </div>
+                                    <div
+                                        className={`max-w-[70%] rounded-2xl px-4 py-3 shadow-sm ${
+                                            message.user.id === auth.user.id
+                                                ? 'bg-blue-500 text-white'
+                                                : 'bg-white text-gray-800 dark:bg-gray-800 dark:text-white'
+                                        }`}
+                                    >
+                                        <p className="leading-relaxed break-words">{message.content}</p>
+                                        <span className="mt-1 block text-xs opacity-70">{format(new Date(message.created_at), 'HH:mm')}</span>
+                                    </div>
+                                </motion.div>
+                            ))}
+                            <div ref={messagesEndRef} />
+                        </div>
+                    ) : (
+                        <div className="flex h-full items-center justify-center">
+                            <p className="text-xl text-gray-500 dark:text-gray-400">Select a user to start chatting</p>
+                        </div>
+                    )}
                 </div>
 
-                {/* Message Input */}
-                {selectedUser ? (
+                {/* Message Input - Only show when a user is selected */}
+                {selectedUser && (
                     <form onSubmit={handleSendMessage} className="border-t bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
                         <div className="flex items-center space-x-3">
                             <div className="relative">
@@ -126,10 +132,6 @@ const Message = () => {
                             </button>
                         </div>
                     </form>
-                ) : (
-                    <div className="flex flex-1 items-center justify-center bg-gray-50 dark:bg-gray-900">
-                        <p className="text-lg text-gray-500 dark:text-gray-400">Select a user to start chatting</p>
-                    </div>
                 )}
             </div>
         </div>
