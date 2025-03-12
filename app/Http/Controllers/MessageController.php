@@ -20,15 +20,37 @@ class MessageController extends Controller
 
     public function store(MessageRequest $request)
     {
-        $message = Message::create(array_merge(
-            $request->validated(),
-            ['user_id' => Auth::id()]
-        ));
+        $message = Message::create([
+            'user_id' => Auth::id(),
+            'recipient_id' => $request->recipient_id,
+            'content' => $request->content
+        ]);
 
-        $pusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), ['cluster' => env('PUSHER_APP_CLUSTER')]);
+        $pusher = new Pusher(
+            env('PUSHER_APP_KEY'),
+            env('PUSHER_APP_SECRET'),
+            env('PUSHER_APP_ID'),
+            ['cluster' => env('PUSHER_APP_CLUSTER')]
+        );
 
+        $message->load('user'); // Load the user relationship
         $pusher->trigger('chat-channel', 'new-message', ['message' => $message]);
 
         return MessageResource::make($message);
+    }
+
+    public function getUserMessages($userId)
+    {
+        return MessageResource::collection(
+            Message::where(function($query) use ($userId) {
+                $query->where('user_id', auth()->id())
+                      ->where('recipient_id', $userId)
+                      ->orWhere('user_id', $userId)
+                      ->where('recipient_id', auth()->id());
+            })
+            ->with('user')
+            ->orderBy('created_at', 'asc')
+            ->get()
+        );
     }
 }

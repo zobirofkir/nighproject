@@ -16,10 +16,13 @@ class MessageResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user_name' => $this->user->name,
-            'user_email' => $this->user->email,
-            'created_at' => $this->created_at->diffForHumans(),
             'content' => $this->content,
+            'created_at' => $this->created_at,
+            'user' => [
+                'id' => $this->user->id,
+                'name' => $this->user->name,
+                'email' => $this->user->email,
+            ],
         ];
     }
 }
