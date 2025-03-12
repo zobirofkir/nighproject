@@ -18,7 +18,7 @@ interface User {
 const Message = () => {
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [newMessage, setNewMessage] = useState('');
-    const [isDarkMode, setIsDarkMode] = useState(false);
+    const [isDarkMode] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -70,12 +70,6 @@ const Message = () => {
             ]);
             setNewMessage('');
         }
-    };
-
-    const toggleDarkMode = () => {
-        setIsDarkMode(!isDarkMode);
-        // Toggle dark class on html element for Tailwind dark mode
-        document.documentElement.classList.toggle('dark');
     };
 
     const toggleSidebar = () => {
