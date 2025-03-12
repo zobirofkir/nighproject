@@ -17,6 +17,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return inertia('Message');
     })->name('messages');
 
+    Route::get('/profile', function () {
+        return inertia('profile/Profile');
+    })->name('profile');
+
 });
 
 require __DIR__.'/auth.php';
