@@ -1,3 +1,4 @@
+import { usePage } from '@inertiajs/react';
 import axios from 'axios';
 import { format } from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -102,6 +103,8 @@ const Message = () => {
         exit: { opacity: 0 },
     };
 
+    const { auth } = usePage().props;
+
     return (
         <div className={`flex h-screen ${isDarkMode ? 'dark' : ''}`}>
             {/* Sidebar with motion */}
@@ -116,7 +119,9 @@ const Message = () => {
                         className={`absolute inset-y-0 left-0 z-50 border-r bg-white md:relative md:block dark:border-gray-700 dark:bg-gray-800`}
                     >
                         <div className="flex h-16 items-center justify-between border-b px-4 dark:border-gray-700">
-                            <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Contacts</h2>
+                            <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+                                {auth.user.name}
+                            </h2>
                             <button onClick={toggleSidebar} className="rounded p-2 hover:bg-gray-100 md:hidden dark:hover:bg-gray-700">
                                 <svg className="h-6 w-6 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
