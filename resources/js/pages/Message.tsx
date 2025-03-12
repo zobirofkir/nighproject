@@ -1,4 +1,4 @@
-import { PageProps } from '@inertiajs/core';
+import { ChatMessage, Props, SelectedUser, User } from '@/types/message';
 import { usePage } from '@inertiajs/react';
 import axios from 'axios';
 import { format } from 'date-fns';
@@ -9,34 +9,6 @@ import React, { useEffect, useRef, useState } from 'react';
 axios.defaults.withCredentials = true;
 axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
 axios.defaults.headers.common['Accept'] = 'application/json';
-
-interface ChatMessage {
-    id: number;
-    content: string;
-    user: {
-        id: number;
-        name: string;
-    };
-    created_at: string;
-}
-
-interface User {
-    id: number;
-    name: string;
-    email: string;
-}
-
-interface SelectedUser {
-    id: number;
-    name: string;
-    email: string;
-}
-
-interface Props extends PageProps {
-    auth: {
-        user: User;
-    };
-}
 
 const Message = () => {
     const [messages, setMessages] = useState<ChatMessage[]>([]);
