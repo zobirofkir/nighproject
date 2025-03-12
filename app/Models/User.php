@@ -58,11 +58,11 @@ class User extends Authenticatable
     protected static function booted()
     {
         Event::listen(Login::class, function ($event) {
-            $event->user->update(['is_active' => true]);
+            $event->user->update(['isActive' => true]);
         });
 
         Event::listen(Logout::class, function ($event) {
-            $event->user->update(['is_active' => false]);
+            $event->user->update(['isActive' => false]);
         });
     }
 
