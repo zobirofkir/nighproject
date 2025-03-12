@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+import { AnimatePresence, motion } from 'framer-motion';
 import React, { useEffect, useRef, useState } from 'react';
 
 interface ChatMessage {
@@ -76,38 +77,57 @@ const Message = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
 
+    const sidebarVariants = {
+        open: { width: '20rem', opacity: 1, x: 0 },
+        closed: { width: 0, opacity: 0, x: '-100%' },
+    };
+
+    const messageVariants = {
+        initial: { opacity: 0, y: 20 },
+        animate: { opacity: 1, y: 0 },
+        exit: { opacity: 0 },
+    };
+
     return (
         <div className={`flex h-screen ${isDarkMode ? 'dark' : ''}`}>
-            {/* Sidebar */}
-            <div
-                className={`${
-                    isSidebarOpen ? 'w-80' : 'w-0'
-                } border-r bg-white transition-all duration-300 md:relative md:block dark:border-gray-700 dark:bg-gray-800 ${
-                    isSidebarOpen ? 'absolute inset-y-0 left-0 z-50' : 'hidden'
-                }`}
-            >
-                <div className="flex h-16 items-center justify-between border-b px-4 dark:border-gray-700">
-                    <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Contacts</h2>
-                    <button onClick={toggleSidebar} className="rounded p-2 hover:bg-gray-100 md:hidden dark:hover:bg-gray-700">
-                        <svg className="h-6 w-6 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-                <div className="overflow-y-auto">
-                    {users.map((user) => (
-                        <div key={user.id} className="flex items-center border-b p-4 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-700">
-                            <div className="h-10 w-10 rounded-full bg-gray-300 dark:bg-gray-600"></div>
-                            <div className="ml-4">
-                                <p className="font-medium text-gray-800 dark:text-white">{user.name}</p>
-                                <p className={`text-sm ${user.status === 'online' ? 'text-green-500' : 'text-gray-500 dark:text-gray-400'}`}>
-                                    {user.status === 'online' ? 'Online' : 'Offline'}
-                                </p>
-                            </div>
+            {/* Sidebar with motion */}
+            <AnimatePresence>
+                {isSidebarOpen && (
+                    <motion.div
+                        initial="closed"
+                        animate="open"
+                        exit="closed"
+                        variants={sidebarVariants}
+                        transition={{ type: 'spring', bounce: 0.25, duration: 0.5 }}
+                        className={`absolute inset-y-0 left-0 z-50 border-r bg-white md:relative md:block dark:border-gray-700 dark:bg-gray-800`}
+                    >
+                        <div className="flex h-16 items-center justify-between border-b px-4 dark:border-gray-700">
+                            <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Contacts</h2>
+                            <button onClick={toggleSidebar} className="rounded p-2 hover:bg-gray-100 md:hidden dark:hover:bg-gray-700">
+                                <svg className="h-6 w-6 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
                         </div>
-                    ))}
-                </div>
-            </div>
+                        <div className="overflow-y-auto">
+                            {users.map((user) => (
+                                <div
+                                    key={user.id}
+                                    className="flex items-center border-b p-4 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-700"
+                                >
+                                    <div className="h-10 w-10 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+                                    <div className="ml-4">
+                                        <p className="font-medium text-gray-800 dark:text-white">{user.name}</p>
+                                        <p className={`text-sm ${user.status === 'online' ? 'text-green-500' : 'text-gray-500 dark:text-gray-400'}`}>
+                                            {user.status === 'online' ? 'Online' : 'Offline'}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             {/* Main Chat Area */}
             <div className="flex flex-1 flex-col">
@@ -127,11 +147,19 @@ const Message = () => {
                     </div>
                 </div>
 
-                {/* Chat Messages */}
+                {/* Chat Messages with motion */}
                 <div className="flex-1 overflow-y-auto bg-gray-100 p-4 dark:bg-gray-900">
                     <div className="space-y-4">
                         {messages.map((message) => (
-                            <div key={message.id} className={`flex ${message.sender === 'me' ? 'justify-end' : 'justify-start'}`}>
+                            <motion.div
+                                key={message.id}
+                                initial="initial"
+                                animate="animate"
+                                exit="exit"
+                                variants={messageVariants}
+                                transition={{ type: 'spring', duration: 0.5 }}
+                                className={`flex ${message.sender === 'me' ? 'justify-end' : 'justify-start'}`}
+                            >
                                 <div
                                     className={`max-w-[70%] rounded-lg p-3 ${
                                         message.sender === 'me' ? 'bg-blue-500 text-white' : 'bg-white text-gray-800 dark:bg-gray-800 dark:text-white'
@@ -140,7 +168,7 @@ const Message = () => {
                                     <p className="break-words">{message.content}</p>
                                     <span className="mt-1 block text-xs opacity-70">{format(message.timestamp, 'HH:mm')}</span>
                                 </div>
-                            </div>
+                            </motion.div>
                         ))}
                         <div ref={messagesEndRef} />
                     </div>
