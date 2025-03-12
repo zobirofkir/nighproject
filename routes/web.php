@@ -4,13 +4,18 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('welcome');
+    return Inertia::render('Home');
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
-    })->name('dashboard');
+
+    /**
+     * Messages Route
+     */
+    Route::get('/messages', function () {
+        return inertia('Message');
+    })->name('messages');
+
 });
 
 require __DIR__.'/settings.php';
