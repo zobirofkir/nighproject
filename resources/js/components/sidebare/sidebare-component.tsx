@@ -8,6 +8,7 @@ interface User {
     name: string;
     email: string;
     isActive: boolean;
+    image: string | null;
 }
 
 interface Props {
@@ -94,16 +95,24 @@ const SidebareComponent = ({ isSidebarOpen, toggleSidebar, users, selectedUser, 
                                         selectedUser?.id === user.id ? 'bg-blue-50 dark:bg-gray-700' : 'hover:bg-gray-50 dark:hover:bg-gray-700'
                                     }`}
                                 >
-                                    <div className="h-12 w-12 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 dark:from-gray-600 dark:to-gray-800"></div>
+                                    {user.image ? (
+                                        <img
+                                            src={user.image}
+                                            alt={user.name}
+                                            className="h-12 w-12 rounded-full object-cover"
+                                        />
+                                    ) : (
+                                        <div className="h-12 w-12 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 dark:from-gray-600 dark:to-gray-800 flex items-center justify-center text-white text-xl">
+                                            {user.name.charAt(0).toUpperCase()}
+                                        </div>
+                                    )}
                                     <div className="ml-4">
                                         <p className="font-semibold text-gray-800 dark:text-white">{user.name}</p>
-                                        {
-                                            user.isActive ? (
-                                                <p className="text-sm text-gray-500 dark:text-gray-400">Online</p>
-                                            ) : (
-                                                <p className="text-sm text-gray-500 dark:text-gray-400">Offline</p>
-                                            )
-                                        }
+                                        {user.isActive ? (
+                                            <p className="text-sm text-gray-500 dark:text-gray-400">Online</p>
+                                        ) : (
+                                            <p className="text-sm text-gray-500 dark:text-gray-400">Offline</p>
+                                        )}
                                     </div>
                                 </div>
                             ))}

@@ -51,7 +51,13 @@ const Message = () => {
                         </button>
                         {selectedUser && (
                             <>
-                                <div className="h-12 w-12 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 dark:from-gray-600 dark:to-gray-800"></div>
+                                {selectedUser.image ? (
+                                    <img src={selectedUser.image} alt={selectedUser.name} className="h-12 w-12 rounded-full object-cover" />
+                                ) : (
+                                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-blue-400 to-blue-600 text-xl text-white dark:from-gray-600 dark:to-gray-800">
+                                        {selectedUser.name.charAt(0).toUpperCase()}
+                                    </div>
+                                )}
                                 <div>
                                     <h2 className="font-bold text-gray-800 dark:text-white">
                                         <a href={`/users/${selectedUser.id}`} className="hover:text-blue-500">

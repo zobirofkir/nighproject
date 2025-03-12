@@ -23,6 +23,7 @@ export interface SelectedUser {
     name: string;
     email: string;
     isActive: boolean;
+    image: string;
 }
 
 export interface Props extends PageProps {
