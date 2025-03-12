@@ -131,9 +131,6 @@ const Message = () => {
                             <span className="text-sm text-gray-500 dark:text-gray-400">Online</span>
                         </div>
                     </div>
-                    <button onClick={toggleDarkMode} className="rounded-full p-2 hover:bg-gray-100 dark:hover:bg-gray-700">
-                        {isDarkMode ? '🌞' : '🌙'}
-                    </button>
                 </div>
 
                 {/* Chat Messages */}
