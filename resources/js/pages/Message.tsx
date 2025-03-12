@@ -3,6 +3,7 @@ import { useChat } from '@/hooks/use-chat';
 import { Props } from '@/types/message';
 import { usePage } from '@inertiajs/react';
 import { format } from 'date-fns';
+import EmojiPicker from 'emoji-picker-react';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 
@@ -11,8 +12,14 @@ const Message = () => {
     const { messages, newMessage, setNewMessage, users, handleUserSelect, selectedUser, handleSendMessage, messagesEndRef } = useChat(auth.user.id);
 
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
+    const onEmojiClick = (emojiObject: any) => {
+        setNewMessage((prevMessage) => prevMessage + emojiObject.emoji);
+        setShowEmojiPicker(false);
+    };
 
     const messageVariants = {
         initial: { opacity: 0, y: 20 },
@@ -20,11 +27,17 @@ const Message = () => {
         exit: { opacity: 0, y: -20 },
     };
 
-
     return (
         <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
             {/* Sidebar with motion */}
-            <SidebareComponent isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} users={users} selectedUser={selectedUser} handleUserSelect={handleUserSelect} auth={auth} />
+            <SidebareComponent
+                isSidebarOpen={isSidebarOpen}
+                toggleSidebar={toggleSidebar}
+                users={users}
+                selectedUser={selectedUser}
+                handleUserSelect={handleUserSelect}
+                auth={auth}
+            />
 
             {/* Main Chat Area */}
             <div className="flex flex-1 flex-col">
@@ -41,13 +54,11 @@ const Message = () => {
                                 <div className="h-12 w-12 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 dark:from-gray-600 dark:to-gray-800"></div>
                                 <div>
                                     <h2 className="font-bold text-gray-800 dark:text-white">{selectedUser.name}</h2>
-                                    {
-                                        selectedUser.isActive ? (
-                                            <span className="text-sm text-green-500 dark:text-green-400">Active</span>
-                                        ) : (
-                                            <span className="text-sm text-gray-500 dark:text-gray-400">Inactive</span>
-                                        )
-                                    }
+                                    {selectedUser.isActive ? (
+                                        <span className="text-sm text-green-500 dark:text-green-400">Active</span>
+                                    ) : (
+                                        <span className="text-sm text-gray-500 dark:text-gray-400">Inactive</span>
+                                    )}
                                 </div>
                             </>
                         )}
@@ -87,12 +98,20 @@ const Message = () => {
                 {selectedUser ? (
                     <form onSubmit={handleSendMessage} className="border-t bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
                         <div className="flex items-center space-x-3">
-                            <button
-                                type="button"
-                                className="rounded-full p-2.5 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
-                            >
-                                😊
-                            </button>
+                            <div className="relative">
+                                <button
+                                    type="button"
+                                    onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                                    className="rounded-full p-2.5 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
+                                >
+                                    😊
+                                </button>
+                                {showEmojiPicker && (
+                                    <div className="absolute bottom-12 left-0 z-50">
+                                        <EmojiPicker onEmojiClick={onEmojiClick} />
+                                    </div>
+                                )}
+                            </div>
                             <input
                                 type="text"
                                 value={newMessage}
