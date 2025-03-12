@@ -1,128 +1,29 @@
-import { ChatMessage, Props, SelectedUser, User } from '@/types/message';
+import { useChat } from '@/hooks/use-chat';
+import { Props } from '@/types/message';
+import { logout } from '@/utils/logout-user';
 import { usePage } from '@inertiajs/react';
-import axios from 'axios';
 import { format } from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';
-import Pusher from 'pusher-js';
-import React, { useEffect, useRef, useState } from 'react';
-
-axios.defaults.withCredentials = true;
-axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
-axios.defaults.headers.common['Accept'] = 'application/json';
+import { useState } from 'react';
 
 const Message = () => {
-    const [messages, setMessages] = useState<ChatMessage[]>([]);
-    const [newMessage, setNewMessage] = useState('');
+    const { auth } = usePage<Props>().props;
+    const { messages, newMessage, setNewMessage, users, selectedUser, handleSendMessage, handleUserSelect, messagesEndRef } = useChat(auth.user.id);
+
     const [isDarkMode] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-    const messagesEndRef = useRef<HTMLDivElement>(null);
-    const [selectedUser, setSelectedUser] = useState<SelectedUser | null>(null);
-    const [users, setUsers] = useState<User[]>([]);
 
-    const { auth } = usePage<Props>().props;
-
-    useEffect(() => {
-        axios
-            .get('/api/users')
-            .then((response) => {
-                setUsers(response.data.filter((user: User) => user.id !== auth.user.id));
-            })
-            .catch((error) => {
-                console.error('Failed to fetch users:', error);
-            });
-    }, []);
-
-    useEffect(() => {
-        // Initialize Pusher
-        const pusher = new Pusher(import.meta.env.VITE_PUSHER_APP_KEY, {
-            cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
-            forceTLS: true,
-        });
-
-        // Subscribe to the channel
-        const channel = pusher.subscribe('chat-channel');
-
-        // Listen for new messages
-        channel.bind('new-message', (data: { message: ChatMessage }) => {
-            setMessages((prevMessages) => {
-                // Only add the message if it's related to the selected conversation
-                if (selectedUser && (data.message.user.id === selectedUser.id || data.message.user.id === auth.user.id)) {
-                    return [...prevMessages, data.message];
-                }
-                return prevMessages;
-            });
-        });
-
-        // Cleanup on component unmount
-        return () => {
-            channel.unbind_all();
-            channel.unsubscribe();
-        };
-    }, []);
-
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    };
-
-    useEffect(() => {
-        scrollToBottom();
-    }, [messages]);
-
-    const handleSendMessage = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (newMessage.trim() && selectedUser) {
-            try {
-                await axios.post('/api/messages', {
-                    content: newMessage,
-                    recipient_id: selectedUser.id,
-                });
-                setNewMessage('');
-            } catch (error) {
-                console.error('Failed to send message:', error);
-            }
-        }
-    };
-
-    const handleUserSelect = (user: User) => {
-        setSelectedUser(user);
-        axios
-            .get(`/api/messages/${user.id}`)
-            .then((response) => {
-                // Ensure we're setting an array of messages
-                setMessages(response.data.data || []); // Access the data property from Laravel API Resource
-            })
-            .catch((error) => {
-                console.error('Failed to fetch messages:', error);
-                setMessages([]); // Set empty array on error
-            });
-    };
-
-    const toggleSidebar = () => {
-        setIsSidebarOpen(!isSidebarOpen);
-    };
-
-    const handleLogout = (e: React.FormEvent) => {
-        e.preventDefault();
-        // Make a POST request to the logout endpoint
-        axios
-            .post('/logout')
-            .then(() => {
-                window.location.href = '/login';
-            })
-            .catch((error) => {
-                console.error('Logout failed:', error);
-            });
-    };
+    const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
     const sidebarVariants = {
-        open: { width: '20rem', opacity: 1, x: 0 },
-        closed: { width: 0, opacity: 0, x: '-100%' },
+        open: { x: 0 },
+        closed: { x: '-100%' },
     };
 
     const messageVariants = {
         initial: { opacity: 0, y: 20 },
         animate: { opacity: 1, y: 0 },
-        exit: { opacity: 0 },
+        exit: { opacity: 0, y: -20 },
     };
 
     return (
@@ -164,7 +65,7 @@ const Message = () => {
                             </div>
                             <div className="border-t p-4 dark:border-gray-700">
                                 <button
-                                    onClick={handleLogout}
+                                    onClick={logout}
                                     className="flex w-full items-center justify-center space-x-2 rounded-lg bg-red-500 px-4 py-2 text-white transition-colors hover:bg-red-600"
                                 >
                                     <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
