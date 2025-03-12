@@ -21,6 +21,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return inertia('profile/Profile');
     })->name('profile');
 
+    Route::get('/users/{user}', function (App\Models\User $user) {
+        return inertia('UserProfile', [
+            'user' => $user->only('id', 'name', 'email', 'created_at', 'isActive')
+        ]);
+    })->name('user.profile');
+
 });
 
 require __DIR__.'/auth.php';

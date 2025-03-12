@@ -53,7 +53,11 @@ const Message = () => {
                             <>
                                 <div className="h-12 w-12 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 dark:from-gray-600 dark:to-gray-800"></div>
                                 <div>
-                                    <h2 className="font-bold text-gray-800 dark:text-white">{selectedUser.name}</h2>
+                                    <h2 className="font-bold text-gray-800 dark:text-white">
+                                        <a href={`/users/${selectedUser.id}`} className="hover:text-blue-500">
+                                            {selectedUser.name}
+                                        </a>
+                                    </h2>
                                     {selectedUser.isActive ? (
                                         <span className="text-sm text-green-500 dark:text-green-400">Active</span>
                                     ) : (
