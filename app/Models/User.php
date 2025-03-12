@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Logout;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -50,12 +51,22 @@ class User extends Authenticatable
         ];
     }
 
-    public function messages()
+    /**
+     * Get the messages for the user.
+     *
+     * @return HasMany
+     */
+    public function messages(): HasMany
     {
         return $this->hasMany(Message::class);
     }
 
-    protected static function booted()
+    /**
+     * Get the messages for the user.
+     *
+     * @return void
+     */
+    protected static function booted() : void
     {
         Event::listen(Login::class, function ($event) {
             $event->user->update(['isActive' => true]);
