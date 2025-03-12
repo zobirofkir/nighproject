@@ -13,6 +13,7 @@ const Message = () => {
 
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
 
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
@@ -27,16 +28,22 @@ const Message = () => {
         exit: { opacity: 0, y: -20 },
     };
 
+    const filteredUsers = users.filter(
+        (user) => user.name.toLowerCase().includes(searchQuery.toLowerCase()) || user.email?.toLowerCase().includes(searchQuery.toLowerCase()),
+    );
+
     return (
         <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
             {/* Sidebar with motion */}
             <SidebareComponent
                 isSidebarOpen={isSidebarOpen}
                 toggleSidebar={toggleSidebar}
-                users={users}
+                users={filteredUsers}
                 selectedUser={selectedUser}
                 handleUserSelect={handleUserSelect}
                 auth={auth}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
             />
 
             {/* Main Chat Area */}
