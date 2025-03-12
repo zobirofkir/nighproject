@@ -43,10 +43,10 @@ class MessageController extends Controller
     {
         return MessageResource::collection(
             Message::where(function($query) use ($userId) {
-                $query->where('user_id', auth()->id())
+                $query->where('user_id', Auth::id())
                       ->where('recipient_id', $userId)
                       ->orWhere('user_id', $userId)
-                      ->where('recipient_id', auth()->id());
+                      ->where('recipient_id', Auth::id());
             })
             ->with('user')
             ->orderBy('created_at', 'asc')

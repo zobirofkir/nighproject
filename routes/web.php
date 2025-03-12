@@ -10,7 +10,6 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-
     /**
      * Messages Route
      */
@@ -18,15 +17,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return inertia('Message');
     })->name('messages');
 
-    /**
-     * Messages API Routes
-     */
-    Route::post('/api/messages', [MessageController::class, 'store']);
-    Route::get('/api/messages', [MessageController::class, 'index']);
-
-    Route::get('/api/users', [UserController::class, 'index']);
-    Route::get('/api/messages/{user}', [MessageController::class, 'getUserMessages']);
-
 });
 
 require __DIR__.'/auth.php';
+require __DIR__.'/api-routes.php';

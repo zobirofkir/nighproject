@@ -6,6 +6,10 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Pusher from 'pusher-js';
 import React, { useEffect, useRef, useState } from 'react';
 
+axios.defaults.withCredentials = true;
+axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+axios.defaults.headers.common['Accept'] = 'application/json';
+
 interface ChatMessage {
     id: number;
     content: string;
@@ -69,18 +73,11 @@ const Message = () => {
         // Listen for new messages
         channel.bind('new-message', (data: { message: ChatMessage }) => {
             setMessages((prevMessages) => {
-                if (!Array.isArray(prevMessages)) {
-                    prevMessages = []; // Ensure prevMessages is an array
+                // Only add the message if it's related to the selected conversation
+                if (selectedUser && (data.message.user.id === selectedUser.id || data.message.user.id === auth.user.id)) {
+                    return [...prevMessages, data.message];
                 }
-                return [
-                    ...prevMessages,
-                    {
-                        id: data.message.id,
-                        content: data.message.content,
-                        user: data.message.user,
-                        created_at: data.message.created_at,
-                    },
-                ];
+                return prevMessages;
             });
         });
 
