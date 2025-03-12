@@ -39,7 +39,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
         <AppLayout>
             <Head title="Log in" />
             <div className="flex min-h-screen items-center justify-center px-4 sm:px-6 lg:px-8">
-                <div className="w-full min-w-[500px]">
+                <div className="w-full min-w-[350px] md:min-w-[500px] overflow-hidden">
                     <div className="rounded-lg border border-gray-100 bg-white p-8 shadow-sm dark:border-gray-800 dark:bg-gray-900">
                         <h2 className="mb-8 text-center text-2xl font-semibold text-gray-900 dark:text-gray-100">Welcome back</h2>
                         <form className="flex flex-col gap-6" onSubmit={submit}>

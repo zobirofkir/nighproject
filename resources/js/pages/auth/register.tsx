@@ -34,14 +34,14 @@ export default function Register() {
     return (
         <AppLayout>
             <Head title="Register" />
-            <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 sm:px-6 lg:px-8">
-                <div className="w-full max-w-md">
-                    <div className="rounded-lg border border-gray-100 bg-white p-8 shadow-sm">
-                        <h2 className="mb-8 text-center text-2xl font-semibold text-gray-900">Create your account</h2>
+            <div className="flex min-h-screen items-center justify-center px-4 sm:px-6 lg:px-8">
+                <div className="w-full min-w-[350px] md:min-w-[500px] overflow-hidden">
+                    <div className="rounded-lg border border-gray-100 bg-white p-8 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+                        <h2 className="mb-8 text-center text-2xl font-semibold text-gray-900 dark:text-gray-100">Create your account</h2>
                         <form className="flex flex-col gap-6" onSubmit={submit}>
                             <div className="grid gap-5">
                                 <div className="grid gap-2">
-                                    <Label htmlFor="name" className="text-gray-700">
+                                    <Label htmlFor="name" className="text-gray-700 dark:text-gray-300">
                                         Name
                                     </Label>
                                     <Input
@@ -61,7 +61,7 @@ export default function Register() {
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="email" className="text-gray-700">
+                                    <Label htmlFor="email" className="text-gray-700 dark:text-gray-300">
                                         Email address
                                     </Label>
                                     <Input
@@ -80,7 +80,7 @@ export default function Register() {
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="password" className="text-gray-700">
+                                    <Label htmlFor="password" className="text-gray-700 dark:text-gray-300">
                                         Password
                                     </Label>
                                     <Input
@@ -99,7 +99,7 @@ export default function Register() {
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="password_confirmation" className="text-gray-700">
+                                    <Label htmlFor="password_confirmation" className="text-gray-700 dark:text-gray-300">
                                         Confirm password
                                     </Label>
                                     <Input
@@ -128,9 +128,9 @@ export default function Register() {
                                 </Button>
                             </div>
 
-                            <div className="text-center text-sm text-gray-600">
+                            <div className="text-center text-sm text-gray-600 dark:text-gray-300">
                                 Already have an account?{' '}
-                                <TextLink href={route('login')} tabIndex={6} className="text-gray-800 hover:text-gray-600">
+                                <TextLink href={route('login')} tabIndex={6} className="text-gray-800 dark:text-gray-300 hover:text-gray-600">
                                     Log in
                                 </TextLink>
                             </div>
