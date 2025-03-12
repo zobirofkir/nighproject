@@ -6,6 +6,7 @@ interface User {
     id: number;
     name: string;
     email: string;
+    isActive: boolean;
 }
 
 interface Props {
@@ -63,7 +64,13 @@ const SidebareComponent = ({ isSidebarOpen, toggleSidebar, users, selectedUser, 
                                     <div className="h-12 w-12 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 dark:from-gray-600 dark:to-gray-800"></div>
                                     <div className="ml-4">
                                         <p className="font-semibold text-gray-800 dark:text-white">{user.name}</p>
-                                        <p className="text-sm text-gray-500 dark:text-gray-400">{user.email}</p>
+                                        {
+                                            user.isActive ? (
+                                                <p className="text-sm text-gray-500 dark:text-gray-400">Online</p>
+                                            ) : (
+                                                <p className="text-sm text-gray-500 dark:text-gray-400">Offline</p>
+                                            )
+                                        }
                                     </div>
                                 </div>
                             ))}

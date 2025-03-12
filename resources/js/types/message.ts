@@ -8,12 +8,14 @@ export interface ChatMessage {
         name: string;
     };
     created_at: string;
+    isActive: boolean;
 }
 
 export interface User {
     id: number;
     name: string;
     email: string;
+    isActive: boolean;
 }
 
 export interface SelectedUser {
