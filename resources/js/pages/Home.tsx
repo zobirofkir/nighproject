@@ -31,7 +31,7 @@ export default function Home() {
         <AppLayout>
             <main className="flex w-full flex-col items-center text-center">
                 {/* Hero Section with Motion */}
-                <div className="relative mb-20 w-full overflow-hidden bg-gradient-to-b from-blue-50 to-white py-20 dark:from-gray-900 dark:to-gray-800">
+                <div className="relative mb-20 w-full overflow-hidden bg-gradient-to-b from-blue-50 to-white rounded-xl py-20 dark:from-gray-900 dark:to-gray-800">
                     <div className="container mx-auto px-4">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
