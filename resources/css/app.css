@@ -157,3 +157,24 @@
         @apply bg-background text-foreground;
     }
 }
+
+/* Animation classes */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.7s ease-out;
+}
+
+.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Dark mode improvements */
+.dark .bg-gradient-to-b {
+    background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
+}
+
+.dark .bg-gradient-to-t {
+    background-image: linear-gradient(to top, var(--tw-gradient-stops));
+}
