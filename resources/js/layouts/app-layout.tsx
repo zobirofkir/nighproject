@@ -6,6 +6,10 @@ interface AppLayoutProps {
     breadcrumbs?: BreadcrumbItem[];
 }
 
-export default ({ children }: AppLayoutProps) => (
-    {children}
-);
+export default function AppLayout({ children }: AppLayoutProps) {
+    return (
+        <div>
+            {children}
+        </div>
+    );
+}

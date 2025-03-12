@@ -1,8 +1,27 @@
 import { type SharedData as Home } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
     const { auth } = usePage<Home>().props;
+    const [theme, setTheme] = useState('light');
+
+    useEffect(() => {
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            setTheme('dark');
+            document.documentElement.classList.add('dark');
+        } else {
+            setTheme('light');
+            document.documentElement.classList.remove('dark');
+        }
+    }, []);
+
+    const toggleTheme = () => {
+        const newTheme = theme === 'light' ? 'dark' : 'light';
+        setTheme(newTheme);
+        localStorage.theme = newTheme;
+        document.documentElement.classList.toggle('dark');
+    };
 
     return (
         <>
@@ -10,12 +29,44 @@ export default function Home() {
                 <link rel="preconnect" href="https://fonts.bunny.net" />
                 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
             </Head>
-            <div className="flex min-h-screen flex-col items-center bg-[#FDFDFC] p-6 text-[#1b1b18] lg:justify-center lg:p-8 dark:bg-[#0a0a0a] dark:text-white">
+            <div className="flex min-h-screen flex-col items-center bg-[#FDFDFC] p-6 text-[#1b1b18] transition-colors duration-300 ease-in-out lg:justify-center lg:p-8 dark:bg-[#0a0a0a] dark:text-white">
                 {/* Header/Nav */}
                 <header className="mb-6 w-full max-w-[335px] text-sm lg:max-w-4xl">
                     <nav className="flex items-center justify-between">
                         <div className="text-2xl font-bold">WeeChat</div>
                         <div className="flex items-center gap-4">
+                            {/* Theme Switcher */}
+                            <button
+                                onClick={toggleTheme}
+                                className="relative flex h-10 w-10 items-center justify-center rounded-lg bg-white shadow-lg transition-transform hover:scale-110 active:scale-95 dark:bg-[#1a1a1a]"
+                                style={{
+                                    boxShadow:
+                                        theme === 'light'
+                                            ? '0px 2px 4px rgba(0, 0, 0, 0.1), 0px 4px 8px rgba(0, 0, 0, 0.1)'
+                                            : '0px 2px 4px rgba(255, 255, 255, 0.1), 0px 4px 8px rgba(255, 255, 255, 0.1)',
+                                }}
+                            >
+                                {theme === 'light' ? (
+                                    <svg className="h-5 w-5 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707"
+                                        />
+                                        <path fill="currentColor" d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10z" />
+                                    </svg>
+                                ) : (
+                                    <svg className="h-5 w-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                                        />
+                                    </svg>
+                                )}
+                            </button>
                             {auth.user ? (
                                 <Link
                                     href={route('messages')}
