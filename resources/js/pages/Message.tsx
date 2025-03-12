@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { format } from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { useEffect, useRef, useState } from 'react';
@@ -77,8 +78,17 @@ const Message = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
 
-    const handleLogout = () => {
-        window.location.href = '/logout';
+    const handleLogout = (e: React.FormEvent) => {
+        e.preventDefault();
+        // Make a POST request to the logout endpoint
+        axios
+            .post('/logout')
+            .then(() => {
+                window.location.href = '/login';
+            })
+            .catch((error) => {
+                console.error('Logout failed:', error);
+            });
     };
 
     const sidebarVariants = {
