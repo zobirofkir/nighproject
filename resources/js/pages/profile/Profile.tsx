@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { FaCamera, FaCheck, FaEdit, FaSave, FaSignOutAlt, FaTrashAlt } from 'react-icons/fa';
+import { FaCamera, FaCheck, FaEdit, FaSave } from 'react-icons/fa';
 
-// Add default avatar constant
 const DEFAULT_AVATAR = 'https://icons.veryicon.com/png/o/miscellaneous/youyinzhibo/guest.png';
 
 interface UserProfile {
@@ -14,7 +13,6 @@ interface UserProfile {
 const Profile = () => {
     const [darkMode, setDarkMode] = useState(false);
 
-    // Test data
     const [profile, setProfile] = useState<UserProfile>({
         name: 'John Doe',
         about: "Hey there! I'm using WhatsApp",
@@ -31,7 +29,6 @@ const Profile = () => {
     const [imageError, setImageError] = useState<string>('');
 
     useEffect(() => {
-        // Check system preference for dark mode
         if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
             setDarkMode(true);
         }
@@ -52,25 +49,10 @@ const Profile = () => {
     };
 
 
-    // Add these new handler functions
     const handleSaveChanges = () => {
-        // TODO: Implement save changes logic
         console.log('Saving changes...');
     };
 
-    const handleLogout = () => {
-        // TODO: Implement logout logic
-        console.log('Logging out...');
-    };
-
-    const handleDeleteAccount = () => {
-        // TODO: Implement delete account logic
-        if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-            console.log('Deleting account...');
-        }
-    };
-
-    // Add this function to handle image errors
     const handleImageError = () => {
         setProfile((prev) => ({
             ...prev,
@@ -78,18 +60,15 @@ const Profile = () => {
         }));
     };
 
-    // Add this function to handle file selection
     const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (!file) return;
 
-        // Validate file type
         if (!file.type.startsWith('image/')) {
             setImageError('Please select an image file');
             return;
         }
 
-        // Validate file size (e.g., max 5MB)
         if (file.size > 5 * 1024 * 1024) {
             setImageError('Image size should be less than 5MB');
             return;
@@ -97,18 +76,15 @@ const Profile = () => {
 
         setImageError('');
 
-        // Create object URL for preview
         const imageUrl = URL.createObjectURL(file);
         setProfile((prev) => ({
             ...prev,
             avatar: imageUrl,
         }));
 
-        // TODO: Implement actual file upload to server
         console.log('File selected:', file);
     };
 
-    // Add this function to trigger file input click
     const handleAvatarClick = () => {
         fileInputRef.current?.click();
     };
@@ -206,25 +182,6 @@ const Profile = () => {
                         Save Changes
                     </button>
 
-                    <button
-                        onClick={handleLogout}
-                        className={`flex w-full items-center justify-center gap-2 rounded-lg px-4 py-3 font-medium transition-colors duration-200 ${
-                            darkMode ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
-                        }`}
-                    >
-                        <FaSignOutAlt size={18} />
-                        Logout
-                    </button>
-
-                    <button
-                        onClick={handleDeleteAccount}
-                        className={`flex w-full items-center justify-center gap-2 rounded-lg px-4 py-3 font-medium transition-colors duration-200 ${
-                            darkMode ? 'bg-red-600 text-white hover:bg-red-700' : 'bg-red-500 text-white hover:bg-red-600'
-                        }`}
-                    >
-                        <FaTrashAlt size={18} />
-                        Delete Account
-                    </button>
                 </div>
             </div>
         </div>
