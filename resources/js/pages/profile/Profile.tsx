@@ -83,7 +83,7 @@ const Profile = () => {
 
     return (
         <MessageLayout>
-            <div className="flex h-screen flex-col items-center justify-center bg-gray-100 transition-colors duration-200 dark:bg-gray-900">
+            <div className="flex h-screen flex-col items-center justify-center mt-10 bg-gray-100 transition-colors duration-200 dark:bg-gray-900">
                 {/* Profile Content */}
                 <div className="mx-auto flex w-full max-w-2xl flex-col items-center space-y-6 p-6">
                     {/* Avatar Section */}
