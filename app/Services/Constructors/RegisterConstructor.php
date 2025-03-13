@@ -2,7 +2,7 @@
 
 namespace App\Services\Constructors;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
+use App\Http\Requests\RegisterRequest;
 use Inertia\Response;
 
 interface RegisterConstructor
@@ -10,5 +10,5 @@ interface RegisterConstructor
 
     public function create(): Response;
 
-    public function store(Request $request): RedirectResponse;
+    public function store(RegisterRequest $request): RedirectResponse;
 }
