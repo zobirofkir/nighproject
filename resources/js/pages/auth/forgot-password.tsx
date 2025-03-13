@@ -8,7 +8,7 @@ import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import AuthLayout from '@/layouts/auth-layout';
+import AppLayout from '@/layouts/app-layout';
 
 export default function ForgotPassword({ status }: { status?: string }) {
     const { data, setData, post, processing, errors } = useForm<Required<{ email: string }>>({
@@ -22,12 +22,12 @@ export default function ForgotPassword({ status }: { status?: string }) {
     };
 
     return (
-        <AuthLayout title="Forgot password" description="Enter your email to receive a password reset link">
+        <AppLayout>
             <Head title="Forgot password" />
 
             {status && <div className="mb-4 text-center text-sm font-medium text-green-600">{status}</div>}
 
-            <div className="space-y-6">
+            <div className="flex flex-col items-center justify-center space-y-6 h-screen">
                 <form onSubmit={submit}>
                     <div className="grid gap-2">
                         <Label htmlFor="email">Email address</Label>
@@ -58,6 +58,6 @@ export default function ForgotPassword({ status }: { status?: string }) {
                     <TextLink href={route('login')}>log in</TextLink>
                 </div>
             </div>
-        </AuthLayout>
+        </AppLayout>
     );
 }
