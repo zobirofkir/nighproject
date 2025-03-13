@@ -1,4 +1,5 @@
 import { User } from '@/types';
+import { router } from '@inertiajs/react';
 
 interface UserListItemProps {
     user: User;
@@ -7,6 +8,11 @@ interface UserListItemProps {
 }
 
 const UserListItem = ({ user, isSelected, onClick }: UserListItemProps) => {
+    const handleProfileClick = (e: React.MouseEvent) => {
+        e.stopPropagation(); // Prevent triggering the parent button click
+        router.visit(`/users/${user.id}`);
+    };
+
     return (
         <button
             onClick={onClick}
@@ -16,9 +22,14 @@ const UserListItem = ({ user, isSelected, onClick }: UserListItemProps) => {
         >
             <div className="relative">
                 {user.image ? (
-                    <img src={user.image} alt={user.name} className="h-12 w-12 rounded-full object-cover" />
+                    <div onClick={handleProfileClick} className="cursor-pointer">
+                        <img src={user.image} alt={user.name} className="h-12 w-12 rounded-full object-cover hover:opacity-80" />
+                    </div>
                 ) : (
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-blue-400 to-blue-600 text-xl text-white">
+                    <div
+                        onClick={handleProfileClick}
+                        className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-gradient-to-r from-blue-400 to-blue-600 text-xl text-white hover:opacity-80"
+                    >
                         {user.name.charAt(0).toUpperCase()}
                     </div>
                 )}
