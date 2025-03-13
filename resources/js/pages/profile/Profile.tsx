@@ -1,5 +1,5 @@
 import MessageLayout from '@/layouts/message/message-layout';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { FaCamera, FaCheck, FaEdit, FaSave } from 'react-icons/fa';
 
 const DEFAULT_AVATAR = 'https://icons.veryicon.com/png/o/miscellaneous/youyinzhibo/guest.png';
@@ -12,8 +12,6 @@ interface UserProfile {
 }
 
 const Profile = () => {
-    const [darkMode, setDarkMode] = useState(false);
-
     const [profile, setProfile] = useState<UserProfile>({
         name: 'John Doe',
         about: "Hey there! I'm using WhatsApp",
@@ -29,12 +27,6 @@ const Profile = () => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [imageError, setImageError] = useState<string>('');
 
-    useEffect(() => {
-        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            setDarkMode(true);
-        }
-    }, []);
-
     const handleEdit = (field: 'name' | 'about', value: string) => {
         setProfile((prev) => ({
             ...prev,
@@ -48,7 +40,6 @@ const Profile = () => {
             [field]: !prev[field],
         }));
     };
-
 
     const handleSaveChanges = () => {
         console.log('Saving changes...');
@@ -92,7 +83,7 @@ const Profile = () => {
 
     return (
         <MessageLayout>
-            <div className={`flex flex-col justify-center items-center h-screen mt-10 transition-colors duration-200 ${darkMode ? 'bg-gray-900' : 'bg-gray-100'}`}>
+            <div className="flex h-screen flex-col items-center justify-center bg-gray-100 transition-colors duration-200 dark:bg-gray-900">
                 {/* Profile Content */}
                 <div className="mx-auto flex w-full max-w-2xl flex-col items-center space-y-6 p-6">
                     {/* Avatar Section */}
@@ -105,9 +96,7 @@ const Profile = () => {
                         />
                         <button
                             onClick={handleAvatarClick}
-                            className={`absolute right-0 bottom-0 rounded-full p-2 shadow-lg transition-colors duration-200 ${
-                                darkMode ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-600 text-white hover:bg-gray-700'
-                            }`}
+                            className={`g-gray-600 hover:bg-gray-700' } absolute right-0 bottom-0 rounded-full bg-gray-700 p-2 text-gray-300 text-white shadow-lg transition-colors duration-200 hover:bg-gray-600`}
                         >
                             <FaCamera size={20} />
                         </button>
@@ -115,12 +104,12 @@ const Profile = () => {
                     </div>
 
                     {/* Display image error if any */}
-                    {imageError && <p className={`text-sm ${darkMode ? 'text-red-400' : 'text-red-500'}`}>{imageError}</p>}
+                    {imageError && <p className="text-sm text-red-500 dark:text-red-400">{imageError}</p>}
 
                     {/* Name Section */}
-                    <div className={`w-full rounded-lg p-4 shadow-md ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'}`}>
+                    <div className="w-full rounded-lg bg-white p-4 text-gray-800 shadow-md dark:bg-gray-800 dark:text-white">
                         <div className="flex items-center justify-between">
-                            <label className={darkMode ? 'text-gray-300' : 'text-gray-500'}>Name</label>
+                            <label className="text-gray-500 dark:text-gray-300">Name</label>
                             <button onClick={() => toggleEdit('name')} className="transition-colors duration-200 hover:text-gray-600">
                                 {editMode.name ? <FaCheck className="text-gray-500" /> : <FaEdit className="text-gray-400" />}
                             </button>
@@ -130,11 +119,7 @@ const Profile = () => {
                                 type="text"
                                 value={profile.name}
                                 onChange={(e) => handleEdit('name', e.target.value)}
-                                className={`mt-1 w-full border-b p-2 focus:outline-none ${
-                                    darkMode
-                                        ? 'border-gray-600 bg-gray-800 text-white focus:border-gray-400'
-                                        : 'border-gray-200 bg-white text-gray-800 focus:border-gray-600'
-                                }`}
+                                className="mt-1 w-full border-b border-gray-200 bg-white p-2 text-gray-800 focus:border-gray-600 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:border-gray-400"
                             />
                         ) : (
                             <p className="mt-1">{profile.name}</p>
@@ -142,9 +127,9 @@ const Profile = () => {
                     </div>
 
                     {/* About Section */}
-                    <div className={`w-full rounded-lg p-4 shadow-md ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'}`}>
+                    <div className="w-full rounded-lg bg-white p-4 text-gray-800 shadow-md dark:bg-gray-800 dark:text-white">
                         <div className="flex items-center justify-between">
-                            <label className={darkMode ? 'text-gray-300' : 'text-gray-500'}>About</label>
+                            <label className="text-gray-500 dark:text-gray-300">About</label>
                             <button onClick={() => toggleEdit('about')} className="transition-colors duration-200 hover:text-gray-600">
                                 {editMode.about ? <FaCheck className="text-gray-500" /> : <FaEdit className="text-gray-400" />}
                             </button>
@@ -154,11 +139,7 @@ const Profile = () => {
                                 type="text"
                                 value={profile.about}
                                 onChange={(e) => handleEdit('about', e.target.value)}
-                                className={`mt-1 w-full border-b p-2 focus:outline-none ${
-                                    darkMode
-                                        ? 'border-gray-600 bg-gray-800 text-white focus:border-gray-400'
-                                        : 'border-gray-200 bg-white text-gray-800 focus:border-gray-600'
-                                }`}
+                                className="mt-1 w-full border-b border-gray-200 bg-white p-2 text-gray-800 focus:border-gray-600 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:border-gray-400"
                             />
                         ) : (
                             <p className="mt-1">{profile.about}</p>
@@ -166,8 +147,8 @@ const Profile = () => {
                     </div>
 
                     {/* Phone Section */}
-                    <div className={`w-full rounded-lg p-4 shadow-md ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'}`}>
-                        <label className={darkMode ? 'text-gray-300' : 'text-gray-500'}>Phone</label>
+                    <div className="w-full rounded-lg bg-white p-4 text-gray-800 shadow-md dark:bg-gray-800 dark:text-white">
+                        <label className="text-gray-500 dark:text-gray-300">Phone</label>
                         <p className="mt-1">{profile.phone}</p>
                     </div>
 
@@ -175,14 +156,11 @@ const Profile = () => {
                     <div className="flex w-full flex-col gap-4">
                         <button
                             onClick={handleSaveChanges}
-                            className={`flex w-full items-center justify-center gap-2 rounded-lg px-4 py-3 font-medium transition-colors duration-200 ${
-                                darkMode ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-500 text-white hover:bg-blue-600'
-                            }`}
+                            className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-500 px-4 py-3 font-medium text-white transition-colors duration-200 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700"
                         >
                             <FaSave size={18} />
                             Save Changes
                         </button>
-
                     </div>
                 </div>
             </div>
