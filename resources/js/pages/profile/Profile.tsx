@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { FaCamera, FaCheck, FaEdit, FaMoon, FaSave, FaSignOutAlt, FaSun, FaTrashAlt } from 'react-icons/fa';
+import { FaCamera, FaCheck, FaEdit, FaSave, FaSignOutAlt, FaTrashAlt } from 'react-icons/fa';
 
 // Add default avatar constant
 const DEFAULT_AVATAR = 'https://icons.veryicon.com/png/o/miscellaneous/youyinzhibo/guest.png';
@@ -51,9 +51,6 @@ const Profile = () => {
         }));
     };
 
-    const toggleDarkMode = () => {
-        setDarkMode(!darkMode);
-    };
 
     // Add these new handler functions
     const handleSaveChanges = () => {
@@ -118,17 +115,6 @@ const Profile = () => {
 
     return (
         <div className={`flex min-h-screen flex-col transition-colors duration-200 ${darkMode ? 'bg-gray-900' : 'bg-gray-100'}`}>
-            {/* Profile Header */}
-            <div className={`flex items-center justify-between p-6 ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'} shadow-md`}>
-                <button
-                    onClick={toggleDarkMode}
-                    className={`rounded-full p-2 ${
-                        darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'
-                    } hover:bg-gray-200 dark:hover:bg-gray-600`}
-                >
-                    {darkMode ? <FaSun size={20} /> : <FaMoon size={20} />}
-                </button>
-            </div>
 
             {/* Profile Content */}
             <div className="mx-auto flex w-full max-w-2xl flex-col items-center space-y-6 p-6">
