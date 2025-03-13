@@ -23,7 +23,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/users/{user}', function (App\Models\User $user) {
         return inertia('UserProfile', [
-            'user' => $user->only('id', 'name', 'email', 'created_at', 'isActive')
+            'user' => $user->only('id', 'name', 'email', 'created_at', 'isActive', 'image')
         ]);
     })->name('user.profile');
 

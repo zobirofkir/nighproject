@@ -18,7 +18,7 @@ const UserProfile = () => {
                         <div className="absolute -bottom-12 left-8">
                             <div className="h-24 w-24 rounded-full border-4 border-white bg-white shadow-lg dark:border-gray-800">
                                 {/* You can add user avatar here if available */}
-                                <div className="h-full w-full rounded-full bg-gradient-to-r from-blue-400 to-blue-600"></div>
+                                <img src={`${user.image}`} alt={user.name} className="h-full w-full rounded-full bg-gradient-to-r from-blue-400 to-blue-600" />
                             </div>
                         </div>
                     </div>
