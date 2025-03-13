@@ -54,10 +54,24 @@ const Message = () => {
                             {selectedUser && (
                                 <>
                                     {selectedUser.image ? (
-                                        <img src={selectedUser.image} alt={selectedUser.name} className="h-12 w-12 rounded-full object-cover" />
+                                        <div className="relative">
+                                            <img src={selectedUser.image} alt={selectedUser.name} className="h-12 w-12 rounded-full object-cover" />
+                                            <div
+                                                className={`absolute right-0 bottom-0 h-3.5 w-3.5 rounded-full border-2 border-white ${
+                                                    selectedUser.isActive ? 'bg-green-500' : 'bg-gray-400'
+                                                }`}
+                                            ></div>
+                                        </div>
                                     ) : (
-                                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-blue-400 to-blue-600 text-xl text-white dark:from-gray-600 dark:to-gray-800">
-                                            {selectedUser.name.charAt(0).toUpperCase()}
+                                        <div className="relative">
+                                            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-blue-400 to-blue-600 text-xl text-white dark:from-gray-600 dark:to-gray-800">
+                                                {selectedUser.name.charAt(0).toUpperCase()}
+                                            </div>
+                                            <div
+                                                className={`absolute right-0 bottom-0 h-3.5 w-3.5 rounded-full border-2 border-white ${
+                                                    selectedUser.isActive ? 'bg-green-500' : 'bg-gray-400'
+                                                }`}
+                                            ></div>
                                         </div>
                                     )}
                                     <div>
@@ -66,11 +80,9 @@ const Message = () => {
                                                 {selectedUser.name}
                                             </a>
                                         </h2>
-                                        {selectedUser.isActive ? (
-                                            <span className="text-sm text-green-500 dark:text-green-400">Active</span>
-                                        ) : (
-                                            <span className="text-sm text-gray-500 dark:text-gray-400">Inactive</span>
-                                        )}
+                                        <span className={`text-sm ${selectedUser.isActive ? 'text-green-500' : 'text-gray-500'}`}>
+                                            {selectedUser.isActive ? 'online' : 'offline'}
+                                        </span>
                                     </div>
                                 </>
                             )}

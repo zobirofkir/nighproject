@@ -2,14 +2,8 @@ import { logout } from '@/utils/logout-user';
 import { router } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
-
-interface User {
-    id: number;
-    name: string;
-    email: string;
-    isActive: boolean;
-    image: string | null;
-}
+import { User } from '@/types';
+import UserListItem from './user-list-item';
 
 interface Props {
     isSidebarOpen: boolean;
@@ -87,35 +81,16 @@ const SidebareComponent = ({ isSidebarOpen, toggleSidebar, users, selectedUser, 
                                 </div>
                             </div>
 
-                            {filteredUsers.map((user) => (
-                                <div
-                                    key={user.id}
-                                    onClick={() => handleUserSelect(user)}
-                                    className={`flex cursor-pointer items-center border-b p-4 transition-colors duration-200 ${
-                                        selectedUser?.id === user.id ? 'bg-blue-50 dark:bg-gray-700' : 'hover:bg-gray-50 dark:hover:bg-gray-700'
-                                    }`}
-                                >
-                                    {user.image ? (
-                                        <img
-                                            src={user.image}
-                                            alt={user.name}
-                                            className="h-12 w-12 rounded-full object-cover"
-                                        />
-                                    ) : (
-                                        <div className="h-12 w-12 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 dark:from-gray-600 dark:to-gray-800 flex items-center justify-center text-white text-xl">
-                                            {user.name.charAt(0).toUpperCase()}
-                                        </div>
-                                    )}
-                                    <div className="ml-4">
-                                        <p className="font-semibold text-gray-800 dark:text-white">{user.name}</p>
-                                        {user.isActive ? (
-                                            <p className="text-sm text-gray-500 dark:text-gray-400">Online</p>
-                                        ) : (
-                                            <p className="text-sm text-gray-500 dark:text-gray-400">Offline</p>
-                                        )}
-                                    </div>
-                                </div>
-                            ))}
+                            <div className="space-y-1 p-3">
+                                {filteredUsers.map((user) => (
+                                    <UserListItem
+                                        key={user.id}
+                                        user={user}
+                                        isSelected={selectedUser?.id === user.id}
+                                        onClick={() => handleUserSelect(user)}
+                                    />
+                                ))}
+                            </div>
                         </div>
                         <div className="space-y-3 border-t p-4 dark:border-gray-700">
                             <button
