@@ -16,6 +16,7 @@ export interface User {
     name: string;
     email: string;
     isActive: boolean;
+    image: string | null;
 }
 
 export interface SelectedUser {
